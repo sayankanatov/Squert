@@ -1,0 +1,74 @@
+---------------------------------------------SUMMARY
+/////////////TOP SIGNATURES
+
+SELECT COUNT(event.signature) AS f1,
+      COUNT(DISTINCT(event.src_ip)) AS f2,
+      COUNT(DISTINCT(event.dst_ip)) AS f3,
+      event.signature_id AS f4,
+      event.signature AS f5
+      FROM event
+      LEFT JOIN mappings AS msrc ON event.src_ip = msrc.ip
+      LEFT JOIN mappings AS mdst ON event.dst_ip = mdst.ip
+      WHERE event.timestamp BETWEEN '2017-01-11' AND '2017-01-13'
+      GROUP BY f4
+      ORDER BY f1 DESC
+
+//////////////TOP SOURCE IPS
+
+SELECT COUNT(event.src_ip) AS f1,
+      COUNT(DISTINCT(event.signature)) AS f2,
+      COUNT(DISTINCT(event.src_ip)) AS f3,
+      INET_NTOA(event.src_ip) AS f6
+      FROM event
+      LEFT JOIN mappings AS msrc ON event.src_ip = msrc.ip
+      LEFT JOIN mappings AS mdst ON event.dst_ip = mdst.ip
+      LEFT JOIN object_mappings AS osrc ON event.src_ip = osrc.object
+      AND osrc.type = 'ip_c'
+     	WHERE event.timestamp BETWEEN '2017-01-11' AND '2017-01-13'
+      GROUP BY f6
+      ORDER BY f1 DESC
+
+///////////////////TOP DESTINATION IPS
+
+SELECT COUNT(sid) AS f1,
+COUNT(DISTINCT(signature)), COUNT(DISTINCT(src_ip)), INET_NTOA(dst_ip)
+FROM event
+      LEFT JOIN mappings AS msrc ON event.src_ip = msrc.ip
+      LEFT JOIN mappings AS mdst ON event.dst_ip = mdst.ip
+      WHERE event.timestamp BETWEEN '2017-01-11' AND '2017-01-13'
+      GROUP BY sid
+      ORDER BY f1 DESC
+
+
+///////////////////////TOP SOURCE PORTS
+
+SELECT COUNT(event.src_port) AS f1,
+            COUNT(DISTINCT(event.signature)) AS f2,
+            COUNT(DISTINCT(event.src_ip)) AS f3,
+            COUNT(DISTINCT(event.dst_ip)) AS f4,
+            event.src_port AS f5
+            FROM event
+            LEFT JOIN mappings AS msrc ON event.src_ip = msrc.ip
+            LEFT JOIN mappings AS mdst ON event.dst_ip = mdst.ip
+            WHERE event.timestamp BETWEEN '2017-01-11' AND '2017-01-13'
+            GROUP BY f5
+            ORDER BY f1 DESC
+
+
+//////////////////////////////TOP DESTINATION PORTS
+
+SELECT COUNT(event.src_port) AS f1,
+                        COUNT(DISTINCT(event.signature)) AS f2,
+                        COUNT(DISTINCT(event.src_ip)) AS f3,
+                        COUNT(DISTINCT(event.dst_ip)) AS f4,
+                        event.dst_port AS f5
+                        FROM event
+                        LEFT JOIN mappings AS msrc ON event.src_ip = msrc.ip
+                        LEFT JOIN mappings AS mdst ON event.dst_ip = mdst.ip
+                        WHERE event.timestamp BETWEEN '2017-01-11' AND '2017-01-13'
+                        GROUP BY f5
+                        ORDER BY f1 DESC
+
+
+
+
