@@ -1,0 +1,16 @@
+.htaccess
+.scripts/*.md5
+.inc/config.php
+.scripts/cliscript.tcl
+.scripts/classified.tcl
+.scripts/results.txt
+.rules
+.images
+.js/config.js
+*.swp
+*.swo
+tests
+*.old
+play
+test.html
+composer.*
